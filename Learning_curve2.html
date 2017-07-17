@@ -1,0 +1,332 @@
+<html>  
+  <head>  
+    <title>Learning Curve</title>
+    <script type="text/javascript">  
+	var k=1;
+	flag = -1
+	flag1=-1;
+	flag2=-1;
+	delta2=125;
+	var x1 = 180;
+	var y1 = 210;
+	var x2 = 180;
+	var ND = 85;
+                    var rate = 0;
+                    var project = 0;
+                    var weekly_labor = 0;
+                    var labor_hours = 0;
+                    var wage_rate = 0;
+                    var total_labor = 0;
+                    var overhead = 0;
+	var total_overhead = 0.0;
+	var total_materials = 0.0;
+                    var materials = 0;
+                    var total_cost = 1;
+                    var labor_rate = 0;
+                    var overhead_rate = 0;
+                    var materials_rate = 0;
+                    var constant = 100.0;
+                    var units = 125.0;
+                    var effort = 0.0;
+//
+function price(ppy) {
+  if (ppy == -1) {
+    ND = 85;
+    flag = -1;
+    draw();
+  }
+  if (ppy == 1) {
+    flag = ppy;
+    draw();
+  }
+}
+
+function doit1(xd) {
+  ND = xd*1.0;
+  draw();
+}
+
+function doit2(cm,hl,rh,ow,tu,bp,un) {
+        labor_hours = hl*1.0;
+        wage_rate = rh*1.0;
+        weekly_labor = labor_hours*wage_rate;
+        total_labor=weekly_labor;
+        overhead = ow*1.0;
+        materials = cm*1.0;
+        constant = tu*1.0;
+        units = un*1.0;
+        bid_price = bp*1.0;
+        // total_cost = total_labor+overhead+materials;
+        //	
+  draw();
+}
+
+          function draw() {  
+            	var canvas = document.getElementById('learning');  
+            	if (canvas.getContext){  
+               	    var gS2 = canvas.getContext('2d');  
+            	}  
+			//
+			// Coordinate system
+			// 
+			gS2.fillStyle = "rgb(248,248,248)";
+			gS2.fillRect(0,0,600,400);
+			//
+			gS2.fillStyle = "rgba(189,198,202,0.8)";
+			gS2.fillRect(42,45,324,300);
+			//
+			gS2.fillStyle = "rgb(240,240,240)";
+			gS2.fillRect(42,50,320,300);
+			gS2.fillRect(0,0,600,20);
+			//
+			gS2.fillStyle = "rgba(189,198,202,0.8)";
+			gS2.fillRect(380,45,220,265);
+			gS2.fillStyle = "rgb(255,255,255)";
+			gS2.fillRect(385,70,210,235);
+			//
+			gS2.strokeStyle = "rgba(189,198,202,0.8)";
+			for (var i=110;i<300;i=i+20) {
+			  gS2.beginPath();  
+			  gS2.moveTo(380,i);
+			  gS2.lineTo(598,i);
+			  gS2.closePath;
+  			  gS2.stroke();  
+			}
+			// grid lines
+			//
+			gS2.lineWidth=1;
+			gS2.strokeStyle = "rgb(255,255,255)";
+			for (var i=50;i<360;i=i+25) {
+			  gS2.beginPath();  
+			  gS2.moveTo(40,i);
+			  gS2.lineTo(365,i);
+			  gS2.closePath;
+  			  gS2.stroke();  
+			}
+			//
+			for (var i=80;i<380;i=i+40) {
+			  gS2.beginPath();  
+			  gS2.moveTo(i,45);
+			  gS2.lineTo(i,350);
+			  gS2.closePath;
+  			  gS2.stroke();  
+			}
+			//
+			// axes
+			//
+			gS2.strokeStyle = "rgb(0,0,0)";
+			gS2.lineWidth=3;
+			gS2.beginPath();  
+			gS2.moveTo(40,45);
+			gS2.lineTo(40,350);
+			gS2.lineTo(375,350);
+			gS2.closePath;
+  			gS2.stroke();  
+			//
+			// labels
+			//
+			// for (var i=1;i<9;i=i+1) {
+                                                            for (var i = 32;i<257;i=i+32) {
+  			  gS2.font = "12px Arial";
+  			  gS2.fillStyle = "Black";
+			  gS2.fillText(""+i,35+i*1.25,370);
+			  // var j = i*2
+                                                              // gS2.font = "10px Arial";
+                                                              // gS2.fillText(""+i,40+j*20,363);
+                                                              // gS2.font = "12px Arial";
+  			  // gS2.fillText("2",32+j*20,370);
+			}
+			//
+			for (var i=1;i<12;i=i+1) {
+  			  gS2.font = "12px Arial";
+  			  gS2.fillStyle = "Black";
+			  temp = ""+i+"0";
+			  var width = gS2.measureText(temp).width;
+  			  gS2.fillText(""+i+"0",35-width,355-i*25);
+			}
+                                                            gS2.strokeStyle = "rgb(128,0,0)";
+                                                            gS2.lineWidth=2;
+			gS2.beginPath();  
+			gS2.moveTo(42,350-constant*2.5);
+			for (i=2;i<256;i=i+2) {
+                                                                yx = constant*Math.pow((ND/100.0),(Math.log(i)/Math.log(2)));
+                                                            // gS2.fillRect(40+i,350-yx,2,2);
+                                                             gS2.lineTo(40+i*1.25,350-(yx*2.5));
+                                                            }
+			gS2.closePath;
+  			gS2.stroke();  
+                                                            effort = constant*Math.pow((ND/100.0),(Math.log(units)/Math.log(2)));
+                                                            total_hours = effort* units;
+                                                            total_weeks = total_hours/labor_hours;
+			total_labor = (effort*units*wage_rate)/1000.0;
+                                                            total_overhead = (overhead*total_weeks)/1000.0;
+                                                            total_materials = (materials*units)/1000.0;
+		                    total_cost = total_labor + total_overhead + total_materials;
+ 			labor_rate = total_labor/total_cost;
+       			overhead_rate = total_overhead/total_cost;
+      			materials_rate = total_materials/total_cost;	
+			project_length = total_weeks*5;
+			profit = (units*bid_price) - (total_cost*1000.0);
+			//
+			gS2.strokeStyle = "rgb(128,0,128)";
+			gS2.lineWidth=1;
+			gS2.beginPath();  
+			gS2.moveTo(40+units*1.25,45);
+			gS2.lineTo(40+units*1.25,350);
+			gS2.closePath;
+  			gS2.stroke();  
+			//
+			gS2.strokeStyle = "rgb(164,164,164)";
+			gS2.lineWidth=1;
+			gS2.beginPath();  
+			gS2.moveTo(41,350-effort*2.5);
+			gS2.lineTo(40+units*1.25,350-effort*2.5);
+			gS2.closePath;
+  			gS2.stroke();  
+			gS2.fillStyle = "rgb(255,255,255)";
+                                                            for (i=45;i<40+units*1.25;i=i+5) {
+                                                               gS2.fillRect(i,348-effort*2.5,1,3);
+			}
+			gS2.fillStyle = "rgb(0,225,0)";
+                                                            gS2.fillRect(38+units*1.25,348-effort*2.5,5,5);
+			gS2.fillStyle = "rgb(128,0,128)";
+			gS2.font = "10px Arial";  
+			temp = Math.round(effort*10)/10;
+			effort = temp;
+			gS2.fillText(""+effort+" hrs./unit",43,363-effort*2.5);
+			gS2.fillText(""+units+" units",45+units*1.25,345);
+			//
+			gS2.font = "bold 14px Arial";  
+			gS2.fillStyle = "rgb(0,0,0)";  
+			gS2.fillText("The Learning Curve Model ", 150, 15); 
+			gS2.font = "bold 14px Arial";  
+			gS2.fillStyle = "Black";  
+			gS2.fillText("Number of Units", 160, 390); 
+			//
+			gS2.font = "bold 14px Arial";  
+			gS2.fillStyle = "Black";  
+			gS2.fillText("Time per unit", 20, 40); 
+			//
+                                                            // work here
+                                                            //
+                                                            // rate,project,weekly_labor,total_labor,overhead,materials,total_cost,labor_rate,overhead_rate,materials_rate
+                                                            //
+                                                            gS2.font = "bold 12px Arial";  
+			gS2.fillStyle = "Black";  
+			gS2.fillText("Performance Measures", 420, 60); 
+                                                            gS2.font = "bold 12px Arial";  
+                                                            gS2.fillText("Learning Rate: "+ND+"%",395,85);
+			temp = Math.round(total_weeks*100)/100;
+			width = gS2.measureText(temp).width;
+                                                            total_weeks = temp;
+                                                            gS2.fillText("Project Length (weeks): "+total_weeks,395,105);
+			 gS2.font = "12px Arial";  
+                                                            temp = Math.round(weekly_labor*10)/10;
+                                                            weekly_labor = temp;
+			width = gS2.measureText(temp).width;
+                                                            gS2.fillText("Weekly Labor Costs $",395,125);
+			gS2.fillText(""+weekly_labor,590-width,125);
+			//
+ 			temp = Math.round(total_labor*10)/10;
+			width = gS2.measureText(temp).width;
+                                                            total_labor = temp;
+                                                            gS2.fillText("Labor Costs ($000)",395,145);
+			gS2.fillText(""+total_labor,590-width,145);
+			//
+ 			temp = Math.round(total_overhead*10)/10;
+			width = gS2.measureText(temp).width;
+                                                            total_overhead = temp;
+                                                            gS2.fillText("Overhead Costs ($000)",395,165);
+			gS2.fillText(""+total_overhead,590-width,165);
+			//
+			temp = Math.round(total_materials*10)/10;
+			width = gS2.measureText(temp).width;
+                                                            total_materials = temp;
+                                                            gS2.fillText("Materials Cost ($000)",395,185);
+			gS2.fillText(""+total_materials,590-width,185);
+			//
+			temp = Math.round(total_cost*10)/10;
+			width = gS2.measureText(temp).width;
+                                                            total_cost = temp;
+                                                            gS2.fillText("TOTAL COST ($000)",395,205);
+			gS2.fillText(""+total_cost,590-width,205);
+			//
+			temp = Math.round(labor_rate*1000)/10;
+			width = gS2.measureText(temp+"%").width;
+                                                            labor_rate = temp;
+                                                            gS2.fillText("Labor percentage:",395,225);
+			gS2.fillText(""+labor_rate+"%",590-width,225);
+			//
+			temp = Math.round(overhead_rate*1000)/10;
+			width = gS2.measureText(temp+"%").width;
+                                                            overhead_rate = temp;
+                                                            gS2.fillText("Overhead percentage: ",395,245);
+			gS2.fillText(""+overhead_rate+"%",590-width,245);
+			//
+			temp = Math.round(materials_rate*1000)/10;
+			width = gS2.measureText(temp+"%").width;
+                                                            materials_rate = temp;
+                                                            gS2.fillText("Materials percentage:",395,265);
+			gS2.fillText(""+materials_rate+"%",590-width,265);
+			//
+			gS2.fillStyle = "rgb(0,0,0)";
+			gS2.font = "10px Arial"; 
+			gS2.fillText("dar, 02-15-2017",400,330);
+                                                            gS2.font = "bold 12px Arial";  
+			temp = Math.round(profit*100)/100;
+			width = gS2.measureText(temp).width;
+                                                            profit = temp;
+                                                            gS2.fillText("Profit: $",395,285)
+			gS2.fillText(""+profit,590-width,285);
+			
+			//
+	}  
+      </script>  
+
+      <style type="text/css">  
+            canvas { border: 0px solid black; }  
+      </style>  
+</head>  
+
+<body onload="doit2(600,600,33,68000,100,882.85,125);">
+<form>
+<table border = "0" width="600">
+  <tr>
+    <td colspan=2>
+         <canvas id="learning" width="600" height="400" bgcolor="white">
+           No support for the HTML5 object.
+        </canvas>  
+    </td>    
+  </tr>
+
+  <tr>
+<td bgcolor="#cdcdcd" align="center" colspan = 2>
+<b>Learning Rate:</b> <input name="dx" type="range" onchange="doit1(this.form.dx.value)" min="0" max="100" value="85" step="5"/>
+</td>
+</tr>
+
+<tr>
+<td bgcolor="#dfdfdf" align="right" width="300">Material Cost $<input name="mc" style = "text-align:right;" type="text" value="600" /></td>
+<td  bgcolor="#dfdfdf" align="right" width="300">Labor Hours per Week  <input name="lh" style = "text-align:right;" type="text" value="600" /></td>
+</tr>
+
+<tr>
+<td bgcolor="#dfdfdf" align="right">Hourly Salary Rate ($) <input name="hr" style = "text-align:right;" type="text" value="33" /></td>
+<td bgcolor="#dfdfdf" align="right">Weekly Overhead ($) <input name="wo" style = "text-align:right;" type="text" value="68000" /></td>
+</tr>
+
+<tr>
+<td bgcolor="#dfdfdf" align="right">Time: first unit (hours) <input name="tu"style = "text-align:right;"  type="text" value="100" /></td>
+<td bgcolor="#dfdfdf" align="right">Bid Price ($) <input name="bp" style = "text-align:right;" type="text" value="882.85" /></td>
+</tr>
+
+<tr>
+<td bgcolor="#dfdfdf" align="right">Number of Units <input name="nu" style = "text-align:right;" type="text" value="125" /></td>
+<td bgcolor="#dfdfdf" align="right"><input type="button" value="Solve" onclick="doit2(this.form.mc.value,this.form.lh.value,this.form.hr.value,this.form.wo.value,this.form.tu.value,this.form.bp.value,this.form.nu.value);"/>
+      <input type="Reset" value="Reset" onclick="price(-1)"></td>
+  </tr>
+
+</table>
+</form>
+</body>  
+</html>  

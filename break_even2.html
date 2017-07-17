@@ -1,0 +1,305 @@
+<html>  
+  <head>  
+    <title>Break-Even Quantity</title>
+    <script type="text/javascript">  
+	var k=1;
+	flag = -1
+	flag1=-1;
+	flag2=-1;
+	var price_1 = 100.0;
+	var price_2 = 229.6;
+	var year = 1984;
+	var index = 24;
+	var NQ = 242;
+	var fixed_cost_x = 100;
+	var fixed_cost_y = 200;
+	var fixed_cost_z = 300;
+	var rate_x = 2.0;
+	var rate_y = 1.0;
+	var rate_z = 0.05;
+	var total_cost_x = 100;
+	var total_cost_y = 200;
+	var total_cost_z = 300;
+	var units = 200;
+	var x_ht = 0.0;
+	var x_yt = 0.0
+	var dbl_x = 24;
+	var dbl_y = 72;
+	var shock_x = 0.0;
+	var shock_y = 0.0;
+//
+// 1959 - 2012
+//
+	var lbl = ["Year:","Then:","Today: ","",""];
+	var lbl2 = ["1980","1985","1990","1995","2000","2005","2010","2015","2020","2025","2030","2035","2040"];
+	//
+
+function price() {
+  fixed_cost_x = 1000.0;
+  fixed_cost_y = 2000.0;
+  rate_x = 0.50;
+  rate_y = 0.25;
+  rate_z = 0.10;
+  draw();
+}
+//
+function dte(px1,px2,px3) {
+  fixed_cost_x = px1*1.0;
+  fixed_cost_y = px2*1.0;
+  fixed_cost_z = px3*1.0;
+  draw();
+}
+//
+function doit0(un) {
+  units=un*1.0;
+  draw();
+}
+//
+function doit1(rx) {
+  rate_x = rx*1.0;
+  draw();
+}
+//
+function doit2(ry) {
+  rate_y = ry*1.0;
+  draw();
+}
+//
+function doit3(rz) {
+  rate_z = rz*1.0;
+  draw();
+}
+//
+function toggle() {
+  flag = flag*(-1);
+  draw();
+}
+          function draw() {  
+            	var canvas = document.getElementById('growth1');  
+            	if (canvas.getContext){  
+               	    var gS2 = canvas.getContext('2d');  
+            	}  
+			//
+			// Coordinate system
+			// 
+			gS2.fillStyle = "rgb(248,248,248)";
+			gS2.fillRect(0,0,600,410);
+			//
+			//
+			gS2.fillStyle = "rgb(240,240,240)";
+			gS2.fillRect(0,0,600,20);
+			//
+			gS2.strokeStyle = "rgb(164,164,164)";
+			gS2.lineWidth=1;
+			gS2.beginPath();  
+			gS2.moveTo(0,21);
+			gS2.lineTo(600,21);
+			gS2.closePath;
+  			gS2.stroke();  
+			//
+			//  chart
+			//
+			gS2.fillStyle = "rgb(240,240,240)";
+			gS2.fillRect(80,50,350,240);
+			// gS2.fillStyle = "rgb(100,150,220)";
+			// gS2.fillRect(223,50,24,240);
+			gS2.font = "10px Arial"; 
+			// gS2.fillText("1982-84 = 100.0",200,48);
+			gS2.strokeStyle = "rgb(255,255,255)";
+			//
+			for (i=0;i<245;i=i+25) {
+			  gS2.lineWidth=1;
+			  gS2.beginPath();  
+			  gS2.moveTo(80,40+i);
+			  gS2.lineTo(435,40+i);
+			  gS2.closePath;
+  			  gS2.stroke();  
+			}
+			//
+			gS2.fillStyle = "rgb(128,0,0)";
+			gS2.font = "10px Arial"; 
+			for (i=1;i<10;i++) {
+			  width = gS2.measureText(i+"00").width;
+			  gS2.fillText(i+"00",75-width,295-i*25);
+			}
+			//
+			for (i=0;i<15;i=i+1) {
+			  gS2.lineWidth=1;
+			  gS2.strokeStyle = "rgb(255,255,255)";
+			  gS2.beginPath();  
+			  gS2.moveTo(80+i*25,50);
+			  gS2.lineTo(80+i*25,290);
+			  gS2.closePath;
+  			  gS2.stroke();
+			  gS2.fillStyle = "rgb(128,0,0)";
+			  j = i*25;
+			  gS2.fillText(""+j,75+i*25,302);
+			}
+			gS2.strokeStyle = "rgb(0,0,0)";
+			gS2.lineWidth=3;
+			gS2.beginPath();  
+			gS2.moveTo(80,50);
+			gS2.lineTo(80,290);
+			gS2.lineTo(435,290);
+			gS2.closePath;
+  			gS2.stroke();  
+			gS2.font = "bold 12px Arial";
+			gS2.fillStyle = "rgb(128,0,0)";
+			gS2.fillText("The Break-Even model",180,15);
+			gS2.fillText("Fixed Costs (000's)",35,40);
+			gS2.fillText("Number of Units (000's)",350,320);
+			//
+			gS2.strokeStyle = "rgb(128,0,0)";
+			gS2.lineWidth=2;
+			gS2.beginPath();  
+			gS2.moveTo(82,290-fixed_cost_x/4.0);
+			gS2.lineTo(435,290-(fixed_cost_x + rate_x*350)/4.0);
+			gS2.closePath;
+  			gS2.stroke();  
+			//
+			gS2.strokeStyle = "rgb(0,0,128)";
+			gS2.lineWidth=2;
+			gS2.beginPath();  
+			gS2.moveTo(82,290-fixed_cost_y/4.0);
+			gS2.lineTo(435,290-(fixed_cost_y + rate_y*350)/4.0);
+			gS2.closePath;
+  			gS2.stroke();  
+			//
+			gS2.strokeStyle = "rgb(0,128,0)";
+			gS2.lineWidth=2;
+			gS2.beginPath();  
+			gS2.moveTo(82,290-fixed_cost_z/4.0);
+			gS2.lineTo(435,290-(fixed_cost_z + rate_z*350)/4.0);
+			gS2.closePath;
+  			gS2.stroke();  
+			//
+			//
+			  gS2.strokeStyle = "rgb(128,0,128)";
+			  gS2.lineWidth=1;
+			  gS2.beginPath();  
+			  gS2.moveTo(80+units,50);
+			  gS2.lineTo(80+units,290);
+			  gS2.closePath;
+  			  gS2.stroke();  
+			//
+			gS2.fillStyle = "rgb(128,0,128)";
+			gS2.font = "10px Arial"; 
+			gS2.fillText(""+units+" units",units+85,285);
+			//
+			// 
+			// -- chart end -- begin grid
+			//
+			gS2.fillStyle = "rgb(225,225,225)";
+			gS2.fillRect(3,340,596,21);
+			gS2.fillRect(3,365,596,21);
+			gS2.fillRect(3,390,596,21);
+			//
+			gS2.fillStyle = "rgb(225,0,0)";
+			// gS2.fillRect(60,340,100,20);
+			// gS2.fillRect(60,365,100,20);
+			//
+			gS2.fillStyle = "rgb(255,255,255)";
+			gS2.fillRect(61,341,98,18);
+			gS2.fillRect(61,366,98,18);
+			gS2.fillRect(61,391,98,18);
+			gS2.fillRect(200,340,50,20);
+			gS2.fillRect(200,365,50,20);
+			gS2.fillRect(200,391,50,20);
+			gS2.fillRect(291,341,98,19);
+			gS2.fillRect(291,366,98,18);
+			gS2.fillRect(291,391,98,18);
+			gS2.fillRect(420,340,80,20);
+			gS2.fillRect(420,365,80,20);
+			gS2.fillRect(420,391,80,20);
+			//
+			gS2.fillStyle = "rgb(0,0,0)";
+			gS2.font = "bold 12px Arial"; 
+			gS2.fillText("Marginal Cost",190,338);
+			gS2.fillText("Fixed Cost",72,338);
+			gS2.fillText("Total Costs",295,338);
+			gS2.fillText("",295,338);
+			gS2.fillText(" ",420,338);
+			gS2.fillStyle = "rgb(128,0,0)";
+			gS2.fillText("A:",40,355);
+			gS2.fillStyle = "rgb(0,0,128)";
+			gS2.fillText("B:",40,380);
+			gS2.fillStyle = "rgb(0,128,0)";
+			gS2.fillText("C:",40,405);
+			//
+			total_cost_x = fixed_cost_x + rate_x*units;
+			total_cost_y = fixed_cost_y + rate_y*units;
+			total_cost_z = fixed_cost_z + rate_z*units;
+			//
+			gS2.fillStyle = "rgb(0,0,0)";
+			gS2.font = "bold 12px Arial"; 
+			gS2.fillText("$"+fixed_cost_x,80,355);
+			gS2.fillText("$"+fixed_cost_y,80,380);
+			gS2.fillText("$"+fixed_cost_z,80,405);
+			gS2.fillText("$"+total_cost_x,310,355);
+			gS2.fillText("$"+total_cost_y,310,380);
+			gS2.fillText("$"+total_cost_z,310,405);
+			// gS2.fillText(""+dbl_x+" yrs.",435,355);
+			// gS2.fillText(""+dbl_y+" yrs.",435,380);
+			gS2.fillStyle = "rgb(0,0,0)";
+			gS2.font = "bold 12px Arial";
+			gS2.fillText("$"+rate_x,210,355);
+			gS2.fillText("$"+rate_y,210,380);
+			gS2.fillText("$"+rate_z,210,405);
+			//
+			gS2.fillStyle = "rgb(0,0,0)";
+			gS2.font = "10px Arial"; 
+			// gS2.fillText("dar, 02-17-2017",400,300);
+			//
+	}  
+      </script>  
+
+      <style type="text/css">  
+            canvas { border: 0px solid black; margin-bottom: 3px;}  
+      </style>  
+</head>  
+
+<body onload="draw();">
+<form>
+
+<table border = "0" cellpadding = "0" cellspacing="1">
+  <tr>
+    <td colspan="2">
+      <canvas id="growth1" width="600" height="410" bgcolor="white">No support for the HTML5 object!</canvas>  
+    </td>
+  </tr>
+  <tr>
+     <td colspan = "2" bgcolor = "#cdcdcd" align = "center">
+      <font color = "black" face="Arial" size = "-1"><b>Production: 20 units</b></font><input name="nu" type="range" onchange="doit0(this.form.nu.value)" min="20" max="340.0" value="200.0" step="10"/>
+    <font color = "black" face="Arial" size = "-1"><b> 340 units</b></font>     
+</td>
+  </tr>
+  <tr>
+    <td bgcolor="#dfdfdf" align="center" width="500" valign="top">
+    <font color = "maroon" face="Arial" size = "-1"><b>Firm-A: </b>Fixed Costs <input type = "number" name = "p1" value="100.00" min="100.0" max = "600.0" step="50.0" size = "6"/><br/>
+    <font color = "maroon" face="Arial" size = "-1">Marginal Cost: <b>$0.25 </b></font><input name="xr" type="range" onchange="doit1(this.form.xr.value)" min="0.25" max="4.0" value="2.0" step="0.05"/>
+    <font color = "maroon" face="Arial" size = "-1"><b> $4.00</b></font></td>
+    <td bgcolor="#dfdfdf" align="center" width="100">
+    <input type="Button" value="Submit" onclick="dte(this.form.p1.value,this.form.p2.value,this.form.p3.value)"/>
+    </td>
+  </tr>
+
+  <tr>
+    <td bgcolor="#dfdfdf"width = "500" align="center" valign="top">
+    <font color = "navy" face="Arial" size = "-1"><b>Firm-B: </b>Fixed Costs <input type = "number" name = "p2" value = "200.00" min="100.0" max = "600.0" step = "50.0" size = "6"/><br/>
+    <font color = "navy" face="Arial" size = "-1">Marginal Cost: <b>$0.25 </b></font><input name="yr" type="range" onchange="doit2(this.form.yr.value)" min="0.25" max="4.0" value="1.0" step="0.05"/>
+    <font color = "navy" face="Arial" size = "-1"><b> $4.00</b></font></td>
+   <td bgcolor="#dfdfdf">&nbsp;</td>
+</tr>
+<tr>
+    <td bgcolor="#dfdfdf"width = "500" align="center" valign="top">
+    <font color = "#008800" face="Arial" size = "-1"><b>Firm-C: </b> Fixed Costs <input type = "number" name = "p3" value = "300.00" min="100.0" max = "600.0" step = "50.0" size = "6"/><br/>
+    <font color = "#008800" face="Arial" size = "-1">Marginal Cost: <b>$0.25 </b></font><input name="zr" type="range" onchange="doit3(this.form.zr.value)" min="0.25" max="4.0" value="0.50" step="0.05"/>
+    <font color = "#008800" face="Arial" size = "-1"><b> $4.00</b></font></td>
+    <td bgcolor="#dfdfdf" align="center" width="100">
+      <input type="Reset" value="Reset" onclick="price()"/>
+    </td>
+  </tr>
+</table>
+</form>
+</body>  
+</html>  

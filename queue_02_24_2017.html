@@ -1,0 +1,783 @@
+<html>
+  <head>  
+    <title>Waiting Lines</title>
+    <script type="text/javascript">  
+	//
+	// Feb 22, 2017
+	//
+	// notes:
+	// need to add changes in arrival frequencies
+	// need to add functionality for a second server.
+	//
+	// from Mkt_sim.java
+	//
+	var flag=2;
+	//
+	//
+	// housekeeping
+	//
+	var a=0;
+	var b=0;
+	var a2=0;
+	var b2=0;
+	var i=0;
+	var j=0;
+	var k=1;
+	var index=10;
+	var j2=0;
+	var key2=0;
+	var key3=0;
+	var key4=5.00;
+	var x1 = 0;
+	var x2 = 0;
+	var x3 = 0;
+	var x4 = 0;
+	var flag=2;
+	var server1_flag = 0;
+	var server2_flag = 0
+	var server_count = 1;
+	var flag2=0;
+	var toggle = -1;
+	var toggle1 = -1;
+	//
+	var ia = 1;
+	// var z0 = [0.779,0.607,0.472,0.368,0.287,0.223,0.174,0.135];
+	// var z1 = [0.974,0.910,0.826,0.736,0.645,0.558,0.478,0.406];
+	// var z2 = [0.998,0.986,0.959,0.920,0.869,0.809,0.744,0.677];
+	// var z3 = [1.000,0.999,0.992,0.981,0.962,0.935,0.899,0.857];
+	// var z4 = [1.000,1.000,0.998,0.996,0.991,0.982,0.967,0.947];
+	// var z5 = [1.000,1.000,0.999,0.999,0.998,0.996,0.991,0.983];
+	// var z6 = [1.000,1.000,1.000,1.000,1.000,1.000,0.998,0.995];
+	//
+	var ia_index = [0.10,0.20,0.25,0.30,0.33,0.40,0.50]
+	var z0 = [0.905,0.819,0.779,0.741,0.719,0.67,0.607];
+	var z1 = [0.995,0.981,0.974,0.963,0.956,0.938,0.91];
+	var z2 = [1,0.997,0.998,0.996,0.994,0.992,0.986];
+	var z3 = [1,0.998,0.999,0.999,0.999,0.999,0.999];
+	//
+	var  customer_arrive = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+	var  customer_wait = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+	var  service_time = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+	var  server_begin = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+	var  server1_begin = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+	var  server2_begin = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+	var queue_length = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0];
+	//
+	var arrival = 0;
+	var queue = 0;
+	var xx = 0;
+	var server_time = 3;
+	var xy = 0;
+	var xz = 0;
+	var customer_count = 0;
+	var customer_index = 0;
+                    var color_index = 0;
+	var s_time = 1;
+	var arrival_total = 0;
+	//
+	//
+	//
+	var lbl = ["0","1","2","3","4","5","6","7","8","9","10","11","12"];
+	var lbl1 = ["0.0","1.0","2.0","3.0","4.0","5.0","6.0","7.0","8.0","9.0","10.0","11.0","12.0"];
+	var lbl2 = ["0","10","20","30","40","50","60","70","80","90","100","110","120","130","140"];
+	//	
+	// color choices
+	//
+	// Color dgreen =  new Color(033,137,041);
+	// Color dawn =     new Color(041,156,052);
+	// Color psx =         new Color(000,153,000);
+	// Color csx =          new Color(100,150,220);
+	// Color sky =         new Color(062,090,181);
+	// Color rose =       new Color(195,030,128);
+	// Color azure =     new Color(000,107,132);
+	// Color sunrise =  new Color(176,128,080);
+	var  rr = 0;
+  	var  gg = 0;
+  	var  bb = 0;
+	var sb_code = ["red","maroon","magenta","purple","green","pine","teal","blue","navy","aqua","thunder","snow","orange","silver","gray","black","white","yellow",
+	"dgreen","dawn","psx","csx","sky","rose","azure","sunrise"];
+	var rr_code =  [255,128,255,102,000,000,000,000,000,000,100,224,255,192,164,000,255,255,033,041,000,100,062,195,000,176,000,000];
+	var gg_code = [000,000,000,102,255,128,128,000,000,255,150,224,148,192,164,000,255,255,137,156,153,150,090,030,107,128,000,000];
+	var bb_code = [000,000,255,255,000,000,128,255,128,255,220,224,000,192,164,000,255,000,041,052,000,220,181,128,132,080,000,000];
+//
+function setColor(cl) {
+var canvas = document.getElementById('incidence');  
+        	if (canvas.getContext){  
+                        var gS2 = canvas.getContext('2d');  
+            	}
+  // default black
+  rr = 0;
+  gg = 0;
+  bb = 0;
+  //
+  for (k=0;k<26;k++) {
+     if(cl == sb_code[k]) {
+       rr = rr_code[k];
+       gg = gg_code[k];
+       bb = bb_code[k];
+      // strokeStyle = "rgb(rr,gg,bb)";
+      gS2.strokeStyle = "rgb("+rr+","+gg+","+bb+")";
+      gS2.fillStyle = "rgb("+rr+","+gg+","+bb+")";
+      // gS2.fillStyle = "rgb(rr,gg,bb)";
+     }
+  }
+}
+//
+function setFont(fx) {
+var canvas = document.getElementById('incidence');  
+        	if (canvas.getContext){  
+                       var gS2 = canvas.getContext('2d');  
+            	}  
+	if (fx == "f") {
+	  gS2.font = "bold 14px Arial";
+	}
+	if (fx == "f2") {
+	   gS2.font = "bold 12px Arial";
+	}
+	if (fx == "f3") {
+	   gS2.font = "10px Arial";
+	}
+	if (fx == "f4") {
+	  gS2.font = "12px Arial";
+	}
+	gS2.fillStyle = "rgb("+rr+","+gg+","+bb+")"; 
+} 
+// 
+function drawLine(x1,y1,x2,y2) { 
+	var canvas = document.getElementById('incidence');  
+        	if (canvas.getContext){  
+                       var gS2 = canvas.getContext('2d');  
+            	}  
+	gS2.strokeStyle = "rgb("+rr+","+gg+","+bb+")";
+	gS2.lineWidth=1;
+	gS2.beginPath();  
+	gS2.moveTo(x1,y1);
+	gS2.lineTo(x2,y2);
+	gS2.closePath;
+  	gS2.stroke();
+}
+//
+function drawRect(x1,y1,x2,y2) {
+	var canvas = document.getElementById('incidence');  
+        	if (canvas.getContext){  
+                        var gS2 = canvas.getContext('2d');  
+            	}  
+	gS2.strokeStyle = "rgb("+rr+","+gg+","+bb+")";
+                    gS2.beginPath();
+	gS2.moveTo(x1,y1);
+	gS2.lineTo(x1+x2,y1);
+	gS2.lineTo(x1+x2,y1+y2);
+	gS2.lineTo(x1,y1+y2);
+	gS2.closePath();
+	gS2.stroke();
+}
+//
+function init1() {
+	//
+	server1_flag = 0;
+	server2_flag = 0
+	server_count = 1;
+	flag2=0;
+	toggle = -1;
+	toggle1 = -1;
+	//
+                    arrival = 0;
+	queue = 0;
+	xx = 0;
+	server_time = 3;
+	xy = 0;
+	xz = 0;
+	x3 = 0;
+	x4 = 0;
+	customer_count = 0;
+	customer_index = 0;
+                    color_index = 0;
+	s_time = 1;
+	arrival_total = 0;
+	ia = 1;
+	//
+	for (k = 0;k<40;k++) {
+	  customer_arrive = [k];
+	  customer_wait = [k];
+	  service_time = [k];
+	  server_begin = [k];
+	  server1_begin = [k];
+	  server2_begin = [k];
+	  queue_length = [k];
+	}
+	//
+	draw();
+}
+// 
+function station() {
+toggle1 = toggle1*(-1);
+  if (toggle1 > 0) {
+     server_count =2;
+  }
+  if (toggle1 < 0) {
+     server_count = 1;
+  }
+  draw();
+}
+//
+function doit3(zx) {
+ia = zx*1.0;
+draw();
+}
+//
+function doit2() {
+  toggle = toggle*(-1);
+  draw()
+}
+function doit1(tx) {
+s_time = tx*1.0;
+draw();
+}
+//
+function runner() {
+  	//
+	flag3=1;
+	flag=1;
+  	x4 = 0
+	//
+    	myVar=setInterval(function(){update()},100);
+    	function update() {
+     		//
+    		x4=x4+1;
+		//
+      		if (x4 < 361) {
+      		    x3 = x3 + 1;
+		    //
+                                            // check for customer arrival each minute... 
+		    //
+		    // was x3 > 6 -- clock at each minute
+      		    if (x3>6) {
+                                              xx = Math.random()*1.0;
+		      //
+		      // poisson dist - lambda = 0.333/minute
+		      //
+		      if (xx < z0[ia]) {
+		         arrival = 0;
+		      }
+		      if (xx >= z0[ia] && xx < z1[ia]) {
+		         arrival = 1;
+		         customer_arrive[arrival_total+1] = (x4/6);
+		      }
+		       if (xx >= z1[ia] && xx < z2[ia]) {
+		         arrival = 2;
+		         customer_arrive[arrival_total+1] = (x4/6);
+		         customer_arrive[arrival_total+2] = (x4/6);
+		      }
+		      if (xx >= z2[ia] && xx < z3[ia]) {
+		         arrival = 3;
+		         customer_arrive[arrival_total+1] = (x4/6);
+		         customer_arrive[arrival_total+2] = (x4/6);
+		         customer_arrive[arrival_total+3] = (x4/6);
+		      }
+		        
+          		      x3 = 0;
+		      //
+		      queue = queue + arrival;
+		      arrival_total = arrival_total+arrival;
+       		    }
+		//
+		// server is available
+		//
+		if (server1_flag == 0 && queue > 0 && arrival_total > customer_count) {
+		    server1_flag = 1;
+		    if (queue > 0) {
+		      queue = queue -1;
+		    }
+		    customer_count = customer_count + 1;
+		    // this should be exponential...
+		    server_time = 1+ Math.round(Math.random()*(s_time)*10.0)/10.0;
+		    service_time[customer_count] = server_time;
+                                            server_begin[customer_count] = (x4/6);
+		    queue_length[customer_count] = queue;
+		}
+		//
+		if (server1_flag ==1) {
+		   xy = xy +1;
+		 //  if (xy > server_time*6) {
+		   if (xy > service_time[customer_count]*6) {
+		      server1_flag = 0;
+		      xy = 0;
+		  }
+		}
+		//
+		if (server_count == 2) {
+		if (server2_flag == 0 && server1_flag == 1 && queue > 0 && arrival_total > customer_count) {
+		    server2_flag = 1;
+		    if (queue > 0) {
+		      queue = queue -1;
+		    }
+		    customer_count = customer_count + 1;
+		    // this should be exponential...
+		    server_time = 1+ Math.round(Math.random()*(s_time)*10.0)/10.0;
+		    service_time[customer_count] = server_time;
+                                            server_begin[customer_count] = (x4/6);
+		    queue_length[customer_count] = queue;
+		}
+		//
+		if (server2_flag ==1) {
+		   xz = xz +1;
+		 //  if (xz > server_time*6) {
+		   if (xz > service_time[customer_count]*6) {
+		      server2_flag = 0;
+		      xz = 0;
+		    }
+		  }
+		}
+	draw();
+    }
+}
+//
+    function myStopFunction() {
+      clearInterval(myVar);
+    }
+}
+//
+function draw() {  
+            	var canvas = document.getElementById('incidence');  
+            	if (canvas.getContext){  
+               	    var gS2 = canvas.getContext('2d');  
+            	}  
+			//
+			// Coordinate system
+			// 
+			gS2.fillStyle = "rgb(248,248,248)";
+			gS2.fillRect(0,0,700,550);
+			//
+			gS2.fillStyle = "rgb(240,240,240)";
+			gS2.fillRect(0,0,700,20);
+			//
+			gS2.fillRect(0,0,700,20);
+			gS2.strokeStyle = "rgb(164,164,164)";
+			gS2.lineWidth = "1";
+			drawLine(0,21,700,21);
+			//
+			setColor("maroon");
+			setFont("f2");
+			var t_time = 1+ s_time/2;
+			gS2.fillText("Waiting Lines and Queues ",150,16);
+			//
+			// axis
+			//
+			setColor("snow");
+			gS2.fillRect(30,110,400,435);
+			//
+			setColor("white");
+			for (i2=50;i2<430;i2=i2+20) {
+			  drawLine(i2,110,i2,545);
+			}
+			for (i2=110;i2<570;i2=i2+15) {
+			  drawLine(30,i2,440,i2);
+			}
+			//
+			//  the clock
+			//
+			setColor("black");
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+			gS2.arc(60,60,32,0,2.0*Math.PI);
+			gS2.closePath;
+                			gS2.fill();
+			//
+			gS2.fillStyle = "rgb(255,255,255)";
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+			gS2.arc(60,60,30,0,2.0*Math.PI);
+			gS2.closePath;
+                			gS2.fill();
+			//
+			setColor("white");
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+                			gS2.arc(60,60,5,0,(2.0)*Math.PI);
+                			gS2.closePath;
+                			gS2.fill();
+                			//
+			setColor("black");
+			drawLine(28,60,92,60);
+			drawLine(60,28,60,92);
+			drawLine(45,33,75,87);
+			drawLine(75,33,45,87);
+			drawLine(35,46,85,74);
+			drawLine(35,74,85,46)
+			//
+			gS2.fillStyle = "rgb(255,255,255)";
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+			gS2.arc(60,60,27,0,2.0*Math.PI);
+			gS2.closePath;
+                			gS2.fill();
+			//
+			gS2.fillStyle = "rgb(0,0,0)";
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+			gS2.arc(60,60,27,0,2.0*Math.PI);
+			gS2.closePath;
+                			gS2.fill();
+			//
+			gS2.fillStyle = "rgb(255,255,255)";
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+			gS2.arc(60,60,26,0,2.0*Math.PI);
+			gS2.closePath;
+                			gS2.fill();
+			//
+			setColor("navy");
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+                			gS2.arc(60,60,3,0,(2.0)*Math.PI);
+                			gS2.closePath;
+                			gS2.fill();
+			//
+			if (server1_flag == 0) {
+			  setColor("thunder");
+			}
+			if (server1_flag == 1) {
+			  setColor("thunder");
+			}
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+                			gS2.arc(60,60,27,-0.5*Math.PI,(((x4*4)/720)-0.5)*Math.PI);
+                			gS2.closePath;
+                			gS2.fill();
+			// new...
+			// gS2.strokeStyle = "rgba(255,255,255,0.5)";
+			setColor("white");
+			gS2.lineWidth = "1";
+			//
+			drawLine(33,60,87,60);
+			drawLine(60,33,60,87);
+			drawLine(45,33,75,87);
+			drawLine(75,33,45,87);
+			drawLine(35,46,85,74);
+			drawLine(35,74,85,46)
+			//
+			setColor("white");
+			gS2.beginPath();
+			gS2.moveTo(60,60);
+                			gS2.arc(60,60,2,0,(2.0)*Math.PI);
+                			gS2.closePath;
+                			gS2.fill();
+			//
+                			// header data (arrivals, queue, service...
+			//
+			gS2.fillStyle = "rgb(0,0,128)";
+			gS2.font = "bold 12px Arial";
+			temp = Math.round(x4/6);
+			gS2.fillText("Time: 0 h:"+temp+" m",100,35);
+			gS2.font = "12px Arial";
+			gS2.fillText("Average service time: "+t_time+" min.",110,70);
+			gS2.fillText("Arrival frequency: "+ia_index[ia]+" customers per minute.",110,85);
+			if (arrival_total > 0) {
+			gS2.font = "12px Arial";
+			temp = Math.round(customer_arrive[1]*10.0)/10.0;
+			customer_arrive[1] = temp;
+			gS2.fillText("First customer arrives at:  "+customer_arrive[1]+" min.",110,100);
+			gS2.font = "bold 12px Arial";
+			gS2.fillStyle = "rgb(128,0,0)";
+			var width = gS2.measureText(customer_arrive[1]).width;
+			gS2.fillText(""+customer_arrive[1]+" min.",230-width,187);
+			// gS2.fillText("Total Arrivals: "+arrival_total,200,65)
+			}
+                			//
+			// work here
+			//
+			gS2.fillStyle = "rgb(0,128,0)";
+			gS2.font = "bold 12px Arial";
+			gS2.fillText("Arrivals: ",40,137);
+			for (i=1; i< arrival_total+1;i++) {
+			    color_index = color_index + 1;
+			    if (color_index > 13) {
+			       color_index = 0;
+			   }
+			   setColor(sb_code[5]);
+			   gS2.fillRect(80+i*10,127,8,10);
+			}
+			 gS2.fillText("["+arrival_total+"]",85+i*10,137);
+			//
+			for (i=1; i< customer_count+1;i++) {
+			    color_index = color_index + 1;
+			    if (color_index > 13) {
+			       color_index = 0;
+			   }
+			   setColor("white");
+			   gS2.fillRect(81+i*10,128,6,7);
+			}
+			//
+			gS2.fillStyle = "rgb(225,0,0)";
+			gS2.font = "bold 12px Arial";
+			gS2.fillText("Queue: ",40,152);
+			for (i=1; i< queue+1;i++) {
+			    color_index = color_index + 1;
+			    if (color_index > 13) {
+			       color_index = 0;
+			   }
+			   setColor(sb_code[0]);
+			   gS2.fillRect(80+customer_count*10+i*10,142,8,10);
+			}
+			if (queue > 0) {
+			gS2.fillText("["+queue+"]",85+customer_count*10+i*10,152);
+			}
+			//
+			gS2.font = "bold 12px Arial";
+			gS2.fillStyle = "rgb(0,0,128)";
+			gS2.fillText("Customer",40,165);
+			gS2.fillStyle = "rgb(128,0,0)";
+			gS2.fillText("Service Time",110,165);
+			gS2.fillText("Server idle",200,165)
+			gS2.fillStyle = "rgb(0,0,128)";
+			gS2.fillText("Served:",40,530)
+			//
+			for (i=1;i< customer_count+1; i++) {
+			  temp = Math.round(server_begin[i]*10.0)/10.0;
+			  server_begin[i] = temp;
+			  gS2.fillStyle = "rgb(0,0,128)";
+			  var width = gS2.measureText(""+i).width;
+			  gS2.fillText(""+i,65-width,185+i*15);
+			  setColor("red");
+			  drawRect(90,178+i*15,10*service_time[i],10);
+			  gS2.fillStyle = "rgb(128,0,0)";
+			  if (i<customer_count) {
+			     gS2.fillRect(90,178+i*15,10*service_time[i],10);
+			  }
+			  //
+			  gS2.fillStyle = "rgba(128,0,0,0.5)";
+			  if (i==customer_count) { 
+  			     j = (x4/6) - server_begin[i];
+			         if (j > service_time[i]) {
+				j = service_time[i];
+				// gS2.fillStyle = "rgba(128,0,128,0.5)";
+			         }
+			         gS2.fillRect(90,178+i*15,j*10,10);
+			  }
+			  gS2.fillStyle = "rgb(128,0,0)";
+			  gS2.fillText("["+service_time[i]+"]",95+10*service_time[i],187+i*15);
+			  var idle = (server_begin[i] - server_begin[i-1])-service_time[i];
+			  if (idle < 0) {
+			     idle = 0;
+			  }
+			  temp = Math.round(idle*100.0)/100.0;
+			  idle = temp;
+			  var width = gS2.measureText(idle).width;
+			  gS2.fillText(""+idle,230-width,187+i*15);
+			  //
+			  if (i < customer_count) {
+			    // gS2.fillStyle = "rgb(0,0,128)";
+			    // gS2.fillRect(390,175+i*15,10,10);
+			    // setColor("thunder");
+			    // gS2.fillRect(391,179+i*15,8,5);
+			  }
+			  //
+			   if (i < customer_count) {
+			    gS2.fillStyle = "rgb(0,0,128)";
+			    gS2.fillRect(80+i*15,520,10,10);
+			    setColor("thunder");
+			    gS2.fillRect(81+i*15,521,8,5);
+			   
+			  }
+			  if (i == customer_count-1) {
+			    gS2.fillStyle = "rgb(0,0,128)";
+			    var m = customer_count-1;
+			    gS2.fillText("["+m+"]",95+i*15,530);
+			  }
+			}
+			//
+			setColor("white");
+			gS2.fillRect(270,195,80,50);
+			//
+			if (server1_flag == 1) {
+			  setColor("red");
+			  drawRect(270,195,80,50);
+			  gS2.fillStyle = "rgb(225,0,0)";
+			  gS2.fillText("Server #1",284,215);
+			  gS2.fillText("is busy",293,235);
+			}
+			if (server1_flag == 0) {
+			  setColor("navy");
+			  drawRect(270,195,80,50);
+			  gS2.fillStyle = "rgb(0,0,128)";
+			  gS2.fillText("Server #1",284,215);
+			  gS2.fillText("is available",280,235);
+			}
+			// 
+			setColor("white");
+			gS2.fillRect(270,265,80,50);
+			//
+			if (server2_flag == 1) {
+			  setColor("red");
+			  drawRect(270,265,80,50);
+			  gS2.fillStyle = "rgb(225,0,0)";
+			  gS2.fillText("Server #2",284,285);
+			  gS2.fillText("is busy",293,305);
+			}
+			if (server2_flag == 0) {
+			  if (server_count == 2) {
+			      setColor("navy");
+			        gS2.fillStyle = "rgb(0,0,128)";
+			  }
+			  else {
+			    setColor("gray");
+			     gS2.fillStyle = "rgb(164,164,164)";
+			 }
+			//
+			  drawRect(270,265,80,50);
+			  gS2.fillText("Server #2",284,285);
+			  gS2.fillText("is available",280,305);
+			}
+			// 
+			// data table
+			//
+			var st_total = 0;
+			var st_average = 0;
+			var ql_total = 0;
+			var ql_average = 0;
+			var wt_total = 0;
+			var wt_average = 0;
+			//
+			setColor("snow");
+			// gS2.fillRect(459,51,219,414);
+			 setColor("silver");
+			drawRect(459,51,220,414);
+			setColor("white");
+			gS2.fillRect(463,66,213,480);
+			//
+			setColor("sky");
+			gS2.fillRect(459,32,222,32);
+			setColor("white");
+			setFont("f2");
+			gS2.fillText("Cust.",470,46);
+			gS2.fillText("Served",467,61);
+			gS2.fillText("Service",517,46);
+			gS2.fillText("Time",522,61);
+			gS2.fillText("Queue",568,46);
+			gS2.fillText("Length",568,61);
+			gS2.fillText("Wait",625,46);
+			gS2.fillText("Time",628,61);
+			// gS2.fillText("Difference",615,93);
+			//
+			for (j=0;j<24;j=j+1) {
+			    setColor("silver");
+			   drawRect(460,65+j*20,50,20);
+			   drawRect(510,65+j*20,50,20);
+			   drawRect(560,65+j*20,50,20);
+			   drawRect(610,65+j*20,70,20);
+			}
+			for (i=1;i<customer_count+1;i++) {
+			   setColor("black");
+			   setFont("f2");
+			   //
+			    var width = gS2.measureText(""+i).width;
+			   gS2.fillText(""+i,485-(width/2),60+i*20);
+			   setFont("f4");
+			  st_total = st_total+service_time[i];
+			   temp = Math.round(service_time[i]*100.0)/100.0;
+			    var width = gS2.measureText(temp).width;
+			   service_time[i] = temp;
+			   gS2.fillText(""+(service_time[i]),555-width,60+i*20);
+			   if (queue_length[i] < 0) {
+			      queue_length[i] = 0;
+			   }
+			    var width = gS2.measureText(queue_length[i]).width;
+			   gS2.fillText(""+(queue_length[i]),605-width,60+i*20);
+			   ql_total = ql_total+queue_length[i];	
+			   customer_wait[i] = server_begin[i] - customer_arrive[i]
+			   wt_total = wt_total + customer_wait[i];
+			   temp = Math.round(customer_wait[i]*10.0)/10.0;
+			    var width = gS2.measureText(temp).width;
+			   customer_wait[i] = temp;
+			   gS2.fillText(""+(customer_wait[i]),675-width,60+i*20);
+			}
+			//
+			if (x4 > 355 && customer_count < 24) {
+			  gS2.fillStyle = "rgb(0,0,128)";
+			  gS2.font = "Italic 12px Arial";
+			  gS2.fillText("(One customer still being served....)",80,205+customer_count*15);
+			}
+			//
+			// data table
+			//
+			if (toggle > 0) {
+			  gS2.fillStyle = "rgb(255,255,255)";
+			  gS2.fillRect(200,260,350,200);
+			  gS2.fillStyle = "rgb(0,0,128)";
+			  gS2.fillRect(202,262,346,198);
+			  gS2.fillStyle = "rgb(255,255,255)";
+			  gS2.fillRect(203,263,344,196);
+			  setColor("sky");
+			  gS2.fillRect(204,264,342,194);
+			  gS2.fillStyle = "rgb(255,255,255)";
+			  gS2.fillRect(205,265,340,192);
+			  setColor("sky");
+			  gS2.fillRect(205,265,340,18);
+			  //
+			  //  results...
+			  //
+			  gS2.font = "bold 12px Arial";
+			  gS2.fillStyle = "rgb(255,255,255)";
+			  gS2.fillText("Results...",250,278);
+			  if (customer_count > 0) {
+			    st_average = (st_total-service_time[customer_count])/(customer_count-1);
+			    ql_average = ql_total/customer_count;
+			    wt_average = wt_total/customer_count;
+			    gS2.fillStyle = "rgb(0,0,0)";
+			    gS2.fillText("Total number of customer arrivals (per hour): "+arrival_total,220,300);
+			    gS2.fillText("Total number of customers served: "+customer_count,220,315);
+			    temp = Math.round(st_average*100.0)/100.0;
+			    st_average = temp;
+			    gS2.fillText("Average service time: "+st_average+" minutes",220,335);
+			    temp = Math.round(ql_average*100.0)/100.0;
+			    ql_average = temp;
+			    gS2.fillText("Average Queue length: "+ql_average+" customers",220,355);
+			    temp = Math.round(wt_average*100.0)/100.0;
+			    wt_average = temp;
+			    gS2.fillText("Average Wait time: "+wt_average+" minutes",220,375);
+			    gS2.fillText("Average Time in the system",220,395);
+			    var utilization = st_total/((x4/6)*server_count);
+			    temp = Math.round(utilization*100.0)/100.0;
+			    utilization = temp*100.0;
+			    gS2.fillText("Server utilization: "+utilization+" %",220,415);
+			}
+			}
+}
+</script>  
+
+      <style type="text/css">  
+            canvas { border: 0px solid black; }  
+      </style>
+</head>  
+
+<body onload="init1();">
+<form>
+<table border = "0" >
+  <tr>
+    <td width="700" colspan = "2">
+         <canvas id="incidence" width="700" height="550" bgcolor="white"></canvas>  
+    </td>
+  </tr>
+  <tr>
+     <td align="center" bgcolor="#dedede" width="500">
+     <span style="color: #000088;" font-weight: bold;">Average Service Time: </span>
+     <input type = "range" name="bidx" min="1" max="8" value = "3.00" step="0.50" onchange="doit1(this.form.bidx.value);"/>&nbsp;</td>
+     <td width = "200">
+     <input type = "button" value= "1/2 servers" onclick="station();"/>
+     <input type="button" value="Go!" onclick="runner();"/>
+      </td>
+  </tr>
+  <tr>
+  <td align="center" bgcolor="#dedede" width="500">
+     <span style="color: #000088;" font-weight: bold;">Average # of Arrivals: </span>
+     <input type = "range" name="bidy" min="0.0" max="6.0" value = "1.0" step="1" onchange="doit3(this.form.bidy.value);"/>&nbsp;</td>
+     </td>
+    <td width = "200">
+    <input type="button" value="Results" onclick="doit2();"/>
+    <input type="button" value="Reset" onclick="init1();"/>
+     </td>
+  </tr>
+</table>
+</form>
+</body>
+</html>
